@@ -1,21 +1,102 @@
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.container {
+  display: grid;
+  width: 100%;
+  height: 100%;
 }
-.pagination ul{
-    display: flex;
-    list-style-type: none;
-    gap: 16px;
+.container nav {
+  padding: 1rem;
+  font-size: 32px;
+  font-weight: bold;
 }
-.pagination button{
-    border: none;
-    background-color: transparent;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all .3s ease;
+.container header {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 5px;
 }
-.pagination button:hover{
-    background-color: lightblue;
+.container main {
+  background-color: #f2f2f2;
+  padding: 1rem;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+}
+.container h2 {
+  margin: 0.5rem 0;
+}
+.searchBar {
+  display: flex;
+}
+.inputContainer {
+  flex: 1;
+  display: flex;
+  position: relative;
+}
+.inputContainer svg {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.searchBar input {
+  padding: 5px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: #fdfbfb;
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+.searchBar input:focus {
+  border: 1px solid #7563e3;
+}
+
+.searchBar button {
+  border: rgba(0, 0, 0, 0.1);
+  background-color: #7563e3;
+  color: white;
+  padding: 8px 10px;
+  margin: 0 0.3rem;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.searchBar button:hover{
+  background-color: rgb(67, 44, 219);
+}
+.container table {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: #ffffff;
+  border-collapse: collapse;
+}
+.container td {
+  padding: 8px 12px;
+}
+.container tr {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.pagination ul {
+  display: flex;
+  list-style-type: none;
+  gap: 16px;
+}
+.pagination button {
+  border: none;
+  background-color: transparent;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+.pagination button:hover {
+  background-color: lightblue;
+}
+.productName {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.productName img {
+  border-radius: 3px;
 }
