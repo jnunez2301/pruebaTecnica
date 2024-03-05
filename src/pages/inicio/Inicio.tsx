@@ -1,20 +1,23 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import InicioStyles from "./Inicio.module.css";
 import { AppDispatch, RootState } from "../../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/productSlice";
-import React, { useEffect, useState } from "react";
-import { Product } from "../../redux/models/Product";
+import { useEffect, useState, ChangeEvent } from "react";
 import Pagination from "../../helpers/Pagination";
+import { Product } from "../../redux/models/Product"; 
 
 const Inicio = () => {
   const dispatch: AppDispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.products.data);
-  const loading = useSelector((state: RootState) => state.products.loading);
-  const error = useSelector((state: RootState) => state.products.error);
+  const products: Product[] = useSelector(
+    (state: RootState) => state.products.data
+  );
+  const loading: string = useSelector(
+    (state: RootState) => state.products.loading
+  );
+  const error:string | null = useSelector((state: RootState) => state.products.error);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredData, setFilteredData] = useState([]);
-  const itemsPerPage = 6; // Adjust as needed
+  const [filteredData, setFilteredData] = useState<Product[]>([]); // Use Product[] type
+  const itemsPerPage: number = 6;
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -22,7 +25,7 @@ const Inicio = () => {
 
   useEffect(() => {
     setFilteredData(products);
-  }, [products]);  
+  }, [products]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value: string = event.target.value.trim().toLowerCase();
@@ -35,9 +38,8 @@ const Inicio = () => {
         )
       );
     }
-    setCurrentPage(1); // Reset page to 1 after search
+    setCurrentPage(1);
   };
-  
 
   if (loading === "pending") {
     return <div>Loading...</div>;
@@ -47,13 +49,16 @@ const Inicio = () => {
     return <div>Error: {error}</div>;
   }
 
-  const handlePageChange = (pageNumber:number) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastItem: number = currentPage * itemsPerPage;
+  const indexOfFirstItem: number = indexOfLastItem - itemsPerPage;
+  const currentItems: Product[] = filteredData.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   return (
     <section className={InicioStyles.container}>
@@ -105,40 +110,41 @@ const Inicio = () => {
             </tr>
           </thead>
           <tbody>
-            {/* <td>
-                <input type="checkbox" name="" id="" />
-              </td>
-              <td>Black Shirt</td>
-              <td>T-shirt</td>
-              <td>iCon</td>
-              <td>9.99€</td>
-              <td>20</td> */}
-            {currentItems.map((product) => (
-              <tr key={product.id}>
-                <td>
-                  <input
-                    type="checkbox"
-                    name={product.title}
-                    id={product.title}
-                  />
-                </td>
-                <td className={InicioStyles.productName}>
-                  <img
-                    src={`${product.images[0]}`}
-                    alt={product.title}
-                    width={"64px"}
-                  />
-                  <p>{product.title}</p>
-                </td>
-                <td>{product.category}</td>
-                <td>{product.brand}</td>
-                <td>{product.price}</td>
-                <td>{product.stock}</td>
-              </tr>
-            ))}
+            {currentItems.map(
+              (
+                product: Product // Use Product type here
+              ) => (
+                <tr key={product.id}>
+                  <td>
+                    <input
+                      type="checkbox"
+                      name={product.title}
+                      id={product.title}
+                    />
+                  </td>
+                  <td className={InicioStyles.productName}>
+                    <img
+                      src={`${product.images[0]}`}
+                      alt={product.title}
+                      width={"64px"}
+                    />
+                    <p>{product.title}</p>
+                  </td>
+                  <td>{product.category}</td>
+                  <td>{product.brand}</td>
+                  <td>{product.price}</td>
+                  <td>{product.stock}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={Math.ceil(filteredData.length / itemsPerPage)} onPageChange={handlePageChange} />
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={Math.ceil(filteredData.length / itemsPerPage)}
+          onPageChange={handlePageChange}
+        />
       </main>
     </section>
   );
