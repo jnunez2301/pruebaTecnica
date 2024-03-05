@@ -24,14 +24,20 @@ const Inicio = () => {
     setFilteredData(products);
   }, [products]);  
 
-  const handleInputChange = (event) => {
-    const value = event.target.value.trim();
-    setFilteredData(
-      products.filter((product) =>
-        product.title.toLowerCase().includes(value.toLowerCase())
-      )
-    );
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value: string = event.target.value.trim().toLowerCase();
+    if (value === "") {
+      setFilteredData(products);
+    } else {
+      setFilteredData(
+        products.filter((product) =>
+          product.title.toLowerCase().includes(value)
+        )
+      );
+    }
+    setCurrentPage(1); // Reset page to 1 after search
   };
+  
 
   if (loading === "pending") {
     return <div>Loading...</div>;
