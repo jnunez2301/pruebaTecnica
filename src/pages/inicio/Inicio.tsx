@@ -5,19 +5,34 @@ import { fetchProducts } from "../../redux/productSlice";
 import { useEffect, useState, ChangeEvent } from "react";
 import Pagination from "../../helpers/Pagination";
 import { Product } from "../../redux/models/Product"; 
+import AddProductModal from "../../components/AddProductModal";
+import { useNavigate } from "react-router-dom";
 
 const Inicio = () => {
   const dispatch: AppDispatch = useDispatch();
+
   const products: Product[] = useSelector(
     (state: RootState) => state.products.data
   );
+
   const loading: string = useSelector(
     (state: RootState) => state.products.loading
   );
+
   const error:string | null = useSelector((state: RootState) => state.products.error);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredData, setFilteredData] = useState<Product[]>([]); // Use Product[] type
+  const [filteredData, setFilteredData] = useState<Product[]>([]);
   const itemsPerPage: number = 6;
+  const [isOpen, setIsOpen]  = useState(false);
+  const navigate = useNavigate();
+
+  const onClose = () => {
+    setIsOpen(false);
+  }
+  const handleNavigation =(id:number) =>{
+    navigate(`/product/${id}`)
+  }
+ 
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -60,6 +75,7 @@ const Inicio = () => {
     indexOfLastItem
   );
 
+
   return (
     <section className={InicioStyles.container}>
       <nav>
@@ -93,7 +109,8 @@ const Inicio = () => {
                 <path d="M21 21l-6 -6" />
               </svg>
             </div>
-            <button className={InicioStyles.addProduct}>Add Product</button>
+            <button onClick={() => setIsOpen(true)} className={InicioStyles.addProduct}>Add Product</button>
+            <AddProductModal isOpen={isOpen} onClose={onClose} products={products}/>
           </div>
         </header>
         <table>
@@ -114,7 +131,7 @@ const Inicio = () => {
               (
                 product: Product // Use Product type here
               ) => (
-                <tr key={product.id}>
+                <tr key={product.id} onClick={() => handleNavigation(product.id)}>
                   <td>
                     <input
                       type="checkbox"
@@ -124,9 +141,12 @@ const Inicio = () => {
                   </td>
                   <td className={InicioStyles.productName}>
                     <img
-                      src={`${product.images[0]}`}
+                      src={`${product.thumbnail}`}
                       alt={product.title}
                       width={"64px"}
+                      onError={(e) => {
+                        e.target.src = "https://media.istockphoto.com/id/1318420912/es/vector/maqueta-el-tel%C3%A9fono-de-la-pantalla.jpg?s=612x612&w=0&k=20&c=nRGAN8sCm-xwPgsxS77jjG_mG-70O7wCSdUvb189rNI=";
+                      }}
                     />
                     <p>{product.title}</p>
                   </td>
