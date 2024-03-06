@@ -59,6 +59,7 @@ const ProductDetail = () => {
             <img
               src={product.images ? product.images[0] : ''}
               alt={product.title}
+              width={'320px'}
               onError={(e) => {
                 e.target.src = "https://media.istockphoto.com/id/1318420912/es/vector/maqueta-el-tel%C3%A9fono-de-la-pantalla.jpg?s=612x612&w=0&k=20&c=nRGAN8sCm-xwPgsxS77jjG_mG-70O7wCSdUvb189rNI=";
               }}
@@ -67,7 +68,7 @@ const ProductDetail = () => {
           <div>
             <div className={styles.brandBar}>
               <p>{product.brand}</p>
-              <p>{product.stock}</p>
+              <p>Units in Stock - {product.stock}</p>
             </div>
             <h3>{product.title}</h3>
             <p>{product.description}</p>
